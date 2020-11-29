@@ -1,19 +1,20 @@
 # Start game player has a name and an initial bankroll x
 # Player can go to different games via menu x
-# Slots 
+# Slots x
 # High / Low x
 # Player places bet and wins / loses (hint: rand) x 
 # Player's bankroll goes up and down with wins and losses 
 
 
-#game is odds or evens user guesses if it is odd or even and code displays random number
-
 require 'colorize'
+require_relative 'bankroll'
 
 class Intro
     def initialize
+        @bankroll = Bankroll.new
          prompt
     end 
+
     def prompt
         puts "Welcome to Casino Jones, to start, tell me your name.".colorize(:magenta)
         @user_name = gets.chomp #instance variable accessible in multiple methods #this is the person
@@ -50,12 +51,12 @@ class Intro
         end 
     end 
 
-        class Game_One
+        class Game_One  # this is the odds or even created game
             def initialize(bankroll)
             prompt 
             end 
             def prompt 
-                puts "The game is Odds or evens, if you guess whether the number is odd or even correctly, you win.".colorize(:magenta)
+                puts "The game is Odds or evens, we roll dice, if you guess whether the number will be odd or even correctly, you win.".colorize(:magenta)
                 puts "Choose your guess by entering 1. For Odds or 2. For Evens".colorize(:magenta)
                 choice = gets.to_f
                 puts rand(1..2)
@@ -79,11 +80,10 @@ class Intro
 
     end 
 
-    class Game_Two
-        attr_accessor :user_guess
-        attr_accessor :balance
-        def initialize(user_guess)
-        @user_guess = user_guess
+
+
+    class Game_Two   # this is the low high game I did not use face cards for this
+        def initialize(bankroll)
         prompt
         end 
         def prompt
@@ -111,24 +111,37 @@ class Intro
         end 
     end 
 
-    class Game_Three
-        attr_accessor :user_guess
-        attr_accessor :balance
-        def initialize(user_guess)
-        @user_guess = user_guess
+
+
+    class Game_Three              # this is the slots game solely based randomly on winning or losing  
+
+        def initialize(bankroll)
         prompt 
         end 
+
+
     def prompt
-       puts "This game is slots, when you pull the slot it will tell you if you win or lose".colorize(:magenta)
-       puts "When you press '1. Pull' the game will begin".colorize(:magenta)
+       puts "This game is slots, when you pull the slot it will tell you if you win or lose"
+       puts "When you press 1 the game will begin"
+       
        pull = gets.to_f
        if pull == 1
-        puts rand(2..3)
-       elsif pull != 1
+         rand(2..3)
+        elsif pull != 1
         puts "That is invalid"
         prompt
        end 
-       puts "Would you like to play another hand? Press 1. for Yes 2. for No." 
+
+       result = rand(2..3)
+       if result == 2 
+        puts "Congratulations You win $10"
+       elsif result == 3
+        puts "Dang You lose $10"
+       end 
+
+       
+
+       puts "Would you like to play another again? Press 1. for Yes 2. for No." 
             choice = gets.to_f
             if choice == 1 
              prompt
@@ -137,4 +150,5 @@ class Intro
             end 
         end 
     end 
+
 Intro.new  
